@@ -1,14 +1,19 @@
 
 
+const isEnvDevelopment = webpackEnv === 'development';
+
 module.exports = {
     entry: {
-        app: './src/main.js'
+        app: './src/index.js'
     },
     output: {
         path: config.build.assetsRoot,
-        publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
-        filename: '[name].js',
-        chunkFilename: '[name].js'
+        publicPath: '/',
+        filename: '[name].[contenthash:8].js',
+        chunkFilename: isEnvDevelopment 
+            ? 'statis/js/[name].[contenthash:8].js' 
+            : 'static/js/[name].chunk.js',
+        
     },
     resolve: {
         modules: [path.join(__dirname, '../node_modules')],
@@ -26,10 +31,7 @@ module.exports = {
         xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
     }],
     module: {
-        rules: [{
-            test: /\.vue$/,
-            use: 'vue-loader'
-        },
+        rules: [
         {
             test: /\.js$/,
             use: [{
